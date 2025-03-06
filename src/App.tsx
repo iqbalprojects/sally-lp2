@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import About from "./components/About";
 import Banner from "./components/Banner";
@@ -12,86 +11,134 @@ import AOS from "aos";
 import "aos/dist/aos.css"
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState<string | null>('Home'); // Default to Home (id: 1)
-  const sections = ["Home", "About", "Specialist","Feature", "Experience", "Roadmap"]; // Section IDs
-    // Initialize AOS
-    useEffect(() => {
-      AOS.init({
-        duration: 1000, // Animation duration
-        once: false, // Whether the animation should happen only once
-      });
-    }, []);
+  const [activeLink, setActiveLink] = useState<string | null>('Home'); // Default to Home
+  const sections = ["Home", "About", "Specialist", "Experience", "Roadmap"];
+  
+  // Initialize AOS
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Animation duration
+      once: false, // Whether the animation should happen only once
+    });
+  }, []);
 
-    useEffect(() => {
-      const observerOptions = {
-        root: null,
-        rootMargin: "0px",
-        threshold: 0.5, // Lower threshold to ensure detection
-      };
+  // Improved intersection observer with more reliable detection
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: "-10% 0px -80% 0px", // Focus on elements near the top of viewport
+      threshold: [0.1, 0.2, 0.3, 0.4, 0.5], // Multiple thresholds for better detection
+    };
+  
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Filter for intersecting entries first
+        const intersectingEntries = entries.filter(entry => entry.isIntersecting);
+        
+        if (intersectingEntries.length === 0) return;
+        
+        // Find the topmost visible section
+        let topmostSection = null;
+        let smallestTop = Infinity;
     
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const sectionId = entry.target.id;
-            setActiveLink(sectionId); // Update active link
+        intersectingEntries.forEach((entry) => {
+          const { top } = entry.boundingClientRect;
+          if (top < smallestTop) {
+            smallestTop = top;
+            topmostSection = entry.target.id;
           }
         });
-      }, observerOptions);
     
-      sections.forEach((sectionId) => {
-        const element = document.getElementById(sectionId);
-        if (element) observer.observe(element);
-      });
-    
-      return () => observer.disconnect();
-    }, [sections]);
-    
-    // Scroll event listener to reset active link to Home
-    useEffect(() => {
-      const handleScroll = () => {
-        if (window.scrollY === 0) {
-          setActiveLink("Home"); // Explicitly set active link to Home at the top
+        if (topmostSection) {
+          setActiveLink(topmostSection); // Update active link
         }
-      };
-    
-      window.addEventListener("scroll", handleScroll);
-    
-      return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        const sidebar = document.querySelector(".sidebar");
-        if (
-          isSidebarOpen &&
-          sidebar &&
-          !sidebar.contains(event.target as Node)
-        ) {
-          setIsSidebarOpen(false); // Close the sidebar
-        }
-      };
+      },
+      observerOptions
+    );
   
-      if (isSidebarOpen) {
-        document.addEventListener("mousedown", handleClickOutside);
+    // Observe all sections including Feature for scroll detection
+    [...sections, "Feature"].forEach((sectionId) => {
+      const element = document.getElementById(sectionId);
+      if (element) observer.observe(element);
+    });
+  
+    return () => observer.disconnect();
+  }, []);
+  
+  // Enhanced scroll listener that works with the intersection observer
+  useEffect(() => {
+    const handleScroll = () => {
+      // At the very top of the page, ensure Home is active
+      if (window.scrollY < 50) {
+        setActiveLink("Home");
+        return;
       }
-  
-      // Cleanup the event listener when the sidebar is closed or the component unmounts
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [isSidebarOpen]);
-
-    useEffect(() => {
-      const handleExternalLinkClick = (e: any) => {
-        if (e.target.href?.includes('docs')) {
-          setActiveLink(null); // or handle accordingly
+      
+      // For other positions, find the section that's most visible
+      const viewportHeight = window.innerHeight;
+      const viewportMiddle = viewportHeight / 3; // Focus on top third of screen
+      
+      let bestVisibleSection = null;
+      let bestVisibility = -1;
+      
+      // Include Feature section for detection but not for sidebar display
+      [...sections, "Feature"].forEach(sectionId => {
+        const element = document.getElementById(sectionId);
+        if (!element) return;
+        
+        const rect = element.getBoundingClientRect();
+        
+        // Calculate how much of the section is visible in the top part of viewport
+        const visibleTop = Math.max(0, Math.min(viewportMiddle, rect.bottom) - Math.max(0, rect.top));
+        const sectionVisibility = visibleTop / viewportMiddle;
+        
+        if (sectionVisibility > bestVisibility) {
+          bestVisibility = sectionVisibility;
+          bestVisibleSection = sectionId;
         }
-      };
-      document.addEventListener('click', handleExternalLinkClick);
-      return () => document.removeEventListener('click', handleExternalLinkClick);
-    }, []);
-    return (
-      <div className="font-manrope">
+      });
+      
+      if (bestVisibleSection && bestVisibility > 0.1) { // Only update if reasonably visible
+        setActiveLink(bestVisibleSection);
+      }
+    };
+    
+    // Use both scroll and resize events for reliable updates
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+    
+    // Initial check
+    handleScroll();
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const sidebar = document.querySelector(".sidebar");
+      if (
+        isSidebarOpen &&
+        sidebar &&
+        !sidebar.contains(event.target as Node)
+      ) {
+        setIsSidebarOpen(false); // Close the sidebar
+      }
+    };
+
+    if (isSidebarOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isSidebarOpen]);
+
+  return (
+    <div className="font-manrope">
       {/* Sidebar */}
       <div
         className={`sidebar fixed top-0 left-0 w-[60%] h-full bg-black z-50 transform transition-transform duration-300 ${
@@ -121,19 +168,30 @@ function App() {
         </div>
         <div className="flex flex-col px-[16px] py-[13px] space-y-[24px]">
           {["Home", "About", "Specialist", "Experience", "Roadmap", "Docs"].map(
-            (link, index) => (
-              <a
-                key={index}
-                href={link === "Docs" ? 'https://sallya1c.gitbook.io/docs' : `#${link}`}
-                className={`text-white font-manrope font-semibold text-[16px] leading-[21.86px] ${
-                  activeLink === link ? "opacity-100" : "opacity-[30%]"
-                }`}
-                target={link === "Docs" ? '_blank' : '_self'}
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                {link}
-              </a>
-            )
+            (link, index) => {
+              // Make sure the active link check handles section names correctly
+              const isActive = activeLink === link || 
+                (link === "Specialist" && activeLink === "Specialties");
+              
+              return (
+                <a
+                  key={index}
+                  href={link === "Docs" ? 'https://sallya1c.gitbook.io/docs' : `#${link}`}
+                  className={`text-white font-manrope font-semibold text-[16px] leading-[21.86px] transition-opacity duration-300 ${
+                    isActive ? "opacity-100" : "opacity-[30%]"
+                  }`}
+                  target={link === "Docs" ? '_blank' : '_self'}
+                  onClick={() => {
+                    setIsSidebarOpen(false);
+                    if (link !== "Docs") {
+                      setActiveLink(link);
+                    }
+                  }}
+                >
+                  {link}
+                </a>
+              );
+            }
           )}
           <a
             href="https://creator.bid/agents/678648cdba2b8db95be3f5bb"
@@ -147,10 +205,10 @@ function App() {
 
       {/* Main Content */}
       <Home
-          setIsSidebarOpen={setIsSidebarOpen}
-          activeLink={activeLink} // Pass activeLink as a prop
-          setActiveLink={setActiveLink} // Pass setActiveLink as a prop
-        />
+        setIsSidebarOpen={setIsSidebarOpen}
+        activeLink={activeLink}
+        setActiveLink={setActiveLink}
+      />
       <div className="bg-gradient-to-b from-black via-[#1a1a1a] to-black overflow-hidden">
         <About />
         <Feature />
@@ -161,8 +219,8 @@ function App() {
         <Banner />
       </div>
     </div>
-    );
-  }
+  );
+}
   
 
 export default App;
