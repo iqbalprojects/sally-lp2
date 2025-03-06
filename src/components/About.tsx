@@ -49,7 +49,7 @@ const About = () => {
            ></div>
            <Wrapper animation="fade-up">
            <div
-               className="rounded-[30px] bg-center bg-cover lg:w-[1040px] w-full min-h-[867px] md:h-[613px] lg:min-h-[644px] border-2 border-gray-700 bg-white/5 backdrop-blur-[50px] p-6 gap-6 grid md:flex md:flex-col grid-cols-1 md:p-[60px]"
+               className="rounded-[30px] bg-center bg-cover lg:w-[1040px] w-full min-h-[867px] md:h-[613px] lg:min-h-[644px] border-2 border-gray-700 bg-white/5 backdrop-blur-md p-6 gap-6 grid md:flex md:flex-col grid-cols-1 md:p-[60px]"
                style={{ backgroundImage: `url(${GrainyBg})` }}
            >
                <div className="min-h-[101px] w-full">
