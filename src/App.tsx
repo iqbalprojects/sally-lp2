@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import About from "./components/About";
 import Banner from "./components/Banner";
@@ -12,7 +13,7 @@ import "aos/dist/aos.css"
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeLink, setActiveLink] = useState<string | null>('Home'); // Default to Home (id: 1)
-  const sections = ["Home", "About", "Specialist", "Experience", "Roadmap"]; // Section IDs
+  const sections = ["Home", "About", "Specialist","Feature", "Experience", "Roadmap"]; // Section IDs
     // Initialize AOS
     useEffect(() => {
       AOS.init({
@@ -21,30 +22,42 @@ function App() {
       });
     }, []);
 
-      // Scroll event listener to reset active link to Home
-      useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.5, // Trigger when 50% of the section is visible
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const sectionId = (entry.target.id);
-          setActiveLink(sectionId);
-        }
+    useEffect(() => {
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.5, // Lower threshold to ensure detection
+      };
+    
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.id;
+            setActiveLink(sectionId); // Update active link
+          }
+        });
+      }, observerOptions);
+    
+      sections.forEach((sectionId) => {
+        const element = document.getElementById(sectionId);
+        if (element) observer.observe(element);
       });
-    }, observerOptions);
-
-    sections.forEach((sectionId) => {
-      const element = document.getElementById(sectionId);
-      if (element) observer.observe(element);
-    });
-
-    return () => observer.disconnect();
-  }, [sections]);
+    
+      return () => observer.disconnect();
+    }, [sections]);
+    
+    // Scroll event listener to reset active link to Home
+    useEffect(() => {
+      const handleScroll = () => {
+        if (window.scrollY === 0) {
+          setActiveLink("Home"); // Explicitly set active link to Home at the top
+        }
+      };
+    
+      window.addEventListener("scroll", handleScroll);
+    
+      return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -68,12 +81,20 @@ function App() {
       };
     }, [isSidebarOpen]);
 
-  
+    useEffect(() => {
+      const handleExternalLinkClick = (e: any) => {
+        if (e.target.href?.includes('docs')) {
+          setActiveLink(null); // or handle accordingly
+        }
+      };
+      document.addEventListener('click', handleExternalLinkClick);
+      return () => document.removeEventListener('click', handleExternalLinkClick);
+    }, []);
     return (
       <div className="font-manrope">
       {/* Sidebar */}
       <div
-        className={`sidebar fixed top-0 left-0 w-1/2 h-full bg-black z-50 transform transition-transform duration-300 ${
+        className={`sidebar fixed top-0 left-0 w-[60%] h-full bg-black z-50 transform transition-transform duration-300 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:hidden`}
       >
@@ -108,6 +129,7 @@ function App() {
                   activeLink === link ? "opacity-100" : "opacity-[30%]"
                 }`}
                 target={link === "Docs" ? '_blank' : '_self'}
+                onClick={() => setIsSidebarOpen(false)}
               >
                 {link}
               </a>
