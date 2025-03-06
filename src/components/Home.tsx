@@ -59,7 +59,7 @@ const Home = ({
               <a
                 key={index}
                 href={link === "Docs" ? 'https://sallya1c.gitbook.io/docs' : `#${link}`}
-                className={`font-manrope font-semibold text-[16px] leading-[21.86px] ${
+                className={`font-manrope font-semibold text-[16px] leading-[21.86px] hover:text-[#287CF1] hover:opacity-100 ${
                   activeLink === link ? "" : "opacity-[30%]"
                 }`}
                 target={link === "Docs" ? '_blank' : '_self'}
@@ -109,14 +109,14 @@ const Home = ({
         <div className="w-full min-h-[124px] md:min-h-[56px] flex justify-center flex-col md:flex-row space-y-2.5 md:gap-[32px]">
           <a
             href="#6"
-            className="hover:cursor-pointer mt-3 md:w-[177px] md:h-[56px] font-manrope font-bold text-base leading-[22px] flex w-full min-h-[56px] rounded-[10px] border-2 py-[17px] px-[24px] md:px-[20px] items-center justify-center bg-white text-black"
+            className="hover:cursor-pointer mt-3 md:w-[177px] md:h-[56px] font-manrope font-bold text-base leading-[22px] flex w-full min-h-[56px] rounded-[10px] border-2 border-black/30 py-[17px] px-[24px] md:px-[20px] items-center justify-center bg-white text-black"
           >
             Get Early Access
           </a>
           <a
             href="https://sallya1c.gitbook.io/docs"
             target="_blank"
-            className="space-x-2.5 md:h-[56px] border-white flex w-full min-h-[56px] md:w-[164px] rounded-[10px] border-1 py-[16px] px-[24px] items-center justify-center md:px-[20px]"
+            className="space-x-2.5 border border-white/20 md:h-[56px] border-white flex w-full min-h-[56px] md:w-[164px] rounded-[10px] border-1 py-[16px] px-[24px] items-center justify-center md:px-[20px]"
           >
             <span className="font-manrope font-bold text-base leading-[22px]">
               Read Docs

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import AddIcon from '../assets/add-ico.png'
 import MinIcon from '../assets/min-ico.png'
 const Faq = () => {
@@ -57,30 +58,37 @@ const Faq = () => {
             <h1 className="font-bold font-manrope text-[34px] leading-[46.44px] text-center md:text-[42px] lg:text-[56px] md:leading-[1.2] lg:leading-[76.5px]">Frequently Asked</h1>
             <h1 className="font-bold font-manrope text-[34px] leading-[46.44px] text-center md:text-[42px] lg:text-[56px] md:leading-[1.2] lg:leading-[76.5px]">Questions</h1>
           </div>
-          <div className="w-full flex flex-col justify-center items-center  space-y-[24px] md:px-[5%] lg:px-[90px]">
-            {faqItems.map((item, idx) => (
-              <div data-aos={idx % 2 === 0 ? "fade-right" : "fade-left"} data-aos-duration="1000" key={item.id} className="w-full md:w-[574px] lg:w-[772px] rounded-[12px] border border-white/10 overflow-hidden bg-white/5">
-                <div 
-                  className="w-full min-h-[67px] p-[20px] flex justify-between items-center cursor-pointer"
-                  onClick={() => toggleFaq(item.id)}
-                >
-                  <span className="font-manrope font-bold text-[18px] md:text-[20px] leading-[27.32px]">{item.question}</span>
-                  <img 
-                    src={openFaq === item.id ? MinIcon : AddIcon} 
-                    alt={openFaq === item.id ? "Close" : "Open"} 
-                    className="w-[24px] h-[24px] transition-transform duration-300 flex-shrink-0 ml-2"
-                  />
-                </div>
-                {openFaq === item.id && (
-                  <div className="p-[20px]">
-                    <p className="font-manrope text-[16px] leading-[21.86px] font-normal opacity-[70%]">
-                      {item.answer}
-                    </p>
+          <div className="w-full flex flex-col items-center space-y-[24px] md:px-[5%] lg:px-[90px]">
+              {faqItems.map((item, idx) => (
+                <div data-aos={idx % 2 === 0 ? "fade-right" : "fade-left"} data-aos-duration="1000" key={item.id} className="w-full md:w-[574px] lg:w-[772px] rounded-[12px] border border-white/10 bg-white/5 overflow-hidden transition-all duration-300">
+                  {/* Header */}
+                  <div
+                    className="w-full min-h-[67px] p-[20px] flex justify-between items-center cursor-pointer"
+                    onClick={() => toggleFaq(item.id)}
+                  >
+                    <span className="font-manrope font-bold text-[18px] md:text-[20px]">{item.question}</span>
+                    <img 
+                      src={openFaq === item.id ? MinIcon : AddIcon} 
+                      alt={openFaq === item.id ? "Close" : "Open"} 
+                      className={`w-[24px] h-[24px] transition-transform duration-300 flex-shrink-0 ml-2 ${
+                        openFaq === item.id ? 'rotate-180' : 'rotate-0'
+                      }`}
+                    />
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
+                  {/* Jawaban dengan Animasi */}
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={openFaq === item.id ? { opacity: 1, height: 'auto' } : { opacity: 0, height: 0 }}
+                    transition={{ duration: 0.4, ease: 'easeInOut' }}
+                    className="overflow-hidden"
+                  >
+                    <div className="p-[20px]">
+                      <p className="font-manrope text-[16px] leading-[21.86px] opacity-[70%]">{item.answer}</p>
+                    </div>
+                  </motion.div>
+                </div>
+              ))}
+            </div>
         </div>
         </div>
       </div>

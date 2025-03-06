@@ -6,7 +6,6 @@ import Telegram from "../assets/telegram-2-fill.png";
 import GrainyBg from "../assets/grainy-gradient-bg.png";
 import Base from "../assets/base.png";
 import { useState } from "react";
-import Wrapper from "./WrapperAos";
 const About = () => {
     const [copied, setCopied] = useState(false);
     const handleCopyContractAddress = async () => {
@@ -47,8 +46,8 @@ const About = () => {
                        "linear-gradient(180deg, rgba(1, 2, 1, 0) 0%, #010201 100%)",
                }}
            ></div>
-           <Wrapper animation="fade-up">
            <div
+          data-aos="fade-up" data-aos-duration="1000"
                className="rounded-[30px] bg-center bg-cover lg:w-[1040px] w-full min-h-[867px] md:h-[613px] lg:min-h-[644px] border-2 border-gray-700 bg-white/5 backdrop-blur-md p-6 gap-6 grid md:flex md:flex-col grid-cols-1 md:p-[60px]"
                style={{ backgroundImage: `url(${GrainyBg})` }}
            >
@@ -60,7 +59,7 @@ const About = () => {
                        AskSally
                    </h1>
                </div>
-               <p className="font-manrope text-base leading-[26px] font-normal text-white/80 md:max-w-[800px] border-b border-b-white/20 pb-6">
+               <p className="font-manrope text-base leading-[26px] font-normal text-white/80 md:max-w-[800px] border-b lg:border-b-4 border-b-white/20 pb-6">
                    Chronic diseases like diabetes, obesity, and metabolic
                    syndrome are rising globally, often due to lifestyle
                    imbalances and fragmented healthcare systems. Sally A1C aims
@@ -156,7 +155,6 @@ const About = () => {
                    </div>
                </div>
            </div>
-           </Wrapper>
            
        </div>
     );

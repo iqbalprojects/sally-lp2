@@ -3,6 +3,28 @@
 @tailwind utilities;
 
 @layer utilities {
+
+  .faq-transition-enter {
+    max-height: 0;
+    opacity: 0;
+}
+
+.faq-transition-enter-active {
+    max-height: 500px;
+    opacity: 1;
+    transition: all 300ms ease-in-out;
+}
+
+.faq-transition-exit {
+    max-height: 500px;
+    opacity: 1;
+}
+
+.faq-transition-exit-active {
+    max-height: 0;
+    opacity: 0;
+    transition: all 300ms ease-in-out;
+}
     .border-gradient-custom {
         border-image-source: linear-gradient(
             88.61deg,

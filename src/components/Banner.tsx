@@ -92,7 +92,7 @@ const Banner = () => {
     return (
       <div
       id='6'
-      className="relative w-full min-h-[800px] lg:min-h-[700px] md:min-h-[900px] flex flex-col py-[80px] px-[16px] md:px-[40px] md:py-0 bg-black">
+      className="relative w-full min-h-[800px] md:min-h-[700px] flex flex-col py-[80px] px-[16px] md:px-[40px] md:py-0 bg-black">
 
   {/* Background layers for different screens */}
   <div 
@@ -108,7 +108,7 @@ const Banner = () => {
   <div className="relative w-full flex flex-col items-center lg:w-full lg:h-[200px]">
     {/* Content Box */}
     <div   data-aos="fade-up"
-      data-aos-duration="1000" className="backdrop-blur-[50px] relative w-full max-w-[600px] lg:p-[80px] md:max-w-[754px] lg:min-h-[444px] lg:max-w-[1012px] md:min-h-[470px] min-h-[410px] flex flex-col space-y-[24px] px-[24px] md:px-[20px] md:py-[80px] py-[40px] bg-neutral-800/50 rounded-[16px]">
+      data-aos-duration="1000" className="backdrop-blur-xl relative w-full max-w-[600px] lg:p-[80px] md:max-w-[754px] lg:min-h-[444px] lg:max-w-[1012px] md:min-h-[470px] min-h-[410px] flex flex-col gap-y-6 px-[24px] md:px-[20px] md:py-[80px] py-[40px] bg-neutral-800/50 rounded-[16px]">
       {/* Gradient Border */}
       <div 
         className="absolute inset-0 rounded-[16px] p-[2px]"
@@ -163,7 +163,7 @@ const Banner = () => {
   </div>
 
   {/* Footer positioned absolutely to avoid padding from parent */}
-  <div className="absolute lg:px-[120px] lg:py-[24px] bottom-0 left-0 right-0 w-full min-h-[164px] md:flex-row md:justify-between flex flex-col items-center justify-center space-y-[16px] md:space-y-0 md:px-[40px] py-[24px] border-t border-t-white/20 backdrop-blur-md bg-black/10">
+  <div className="absolute lg:px-[120px] lg:py-[24px] bottom-0 left-0 right-0 w-full  md:flex-row md:justify-between flex flex-col items-center justify-center space-y-[16px] md:space-y-0 md:px-[40px] py-[24px] border-t border-t-white/20 backdrop-blur-md bg-black/10">
     <h1 className="text-center font-manrope font-extrabold text-[32px] bg-gradient-to-r from-[#FFFFFF] to-[#287CF1] bg-clip-text text-transparent">
       AskSally
     </h1>
