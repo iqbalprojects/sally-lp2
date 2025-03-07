@@ -4,8 +4,8 @@ export default {
     theme: {
         extend: {
             backgroundImage: {
-                about: "url('/src/assets/bg-about.png')",
-                aboutTablet: "url('/src/assets/bg-about2.png')",
+                about: "url('/src/assets/bg-about.webp')",
+                aboutTablet: "url('/src/assets/bg-about2.webp')",
                 radial: "radial-gradient(circle at 50% 30%, rgba(40, 124, 241, 0.3) 0%, rgba(40, 124, 241, 0.2) 15%, rgba(40, 124, 241, 0) 45%)",
                 radialDesktop:
                     "radial-gradient(circle at 50% 50%, rgba(40, 124, 241, 0.3) 0%, rgba(40, 124, 241, 0.2) 15%, rgba(40, 124, 241, 0) 40%)",
