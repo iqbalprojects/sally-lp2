@@ -116,7 +116,7 @@ const Home = ({
           <a
             href="https://sallya1c.gitbook.io/docs"
             target="_blank"
-            className="space-x-2.5 border border-[#E5E5E5] md:h-[56px] border-white flex w-full min-h-[56px] md:w-[164px] rounded-[10px] border-1 py-[16px] px-[24px] items-center justify-center md:px-[20px]"
+            className="space-x-2.5 border border-[#E5E5E5] md:h-[56px] flex w-full min-h-[56px] md:w-[164px] rounded-[10px] border-1 py-[16px] px-[24px] items-center justify-center md:px-[20px]"
           >
             <span className="font-manrope font-bold text-base leading-[22px]">
               Read Docs
