@@ -2,7 +2,7 @@ import Lightbulb from "../assets/light-bulb 1.png";
 import Coding from "../assets/coding (1) 1.png";
 import Crown from "../assets/crown (1) 1.png";
 import Heart from "../assets/heart (1) 1.png";
-import video from "../assets/second.webm";
+import video from "../assets/second.mp4";
 
 const Experience = () => {
     return (
