@@ -67,7 +67,7 @@ const Home = ({
                     {[
                         "Home",
                         "About",
-                        "Specialist",
+                        "Specialties",
                         "Experience",
                         "Roadmap",
                         "Docs",
