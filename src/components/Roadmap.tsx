@@ -48,7 +48,7 @@ const Roadmap = () => {
                                 <li className="font-manrope font-normal text-[14px] leading-[20px] opacity-[70%]">
                                     Having mindshare on{" "}
                                     <a
-                                        href="cookie.fun"
+                                        href="https://www.cookie.fun/en/agent/sally_a1c"
                                         target="_blank"
                                         className="underline hover:text-blue-500"
                                     >
