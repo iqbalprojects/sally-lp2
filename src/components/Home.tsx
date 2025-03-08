@@ -91,7 +91,7 @@ const Home = ({
 
                 {/* Buttons */}
                 <div className="flex w-1/2 justify-end gap-[10px] min-h-[38px]">
-                    <a href="#6">
+                    <a href="#Banner">
                         <img
                             src={Wallet}
                             className="w-[38px] h-[38px] hidden md:block"
@@ -128,7 +128,7 @@ const Home = ({
                 </div>
                 <div className="w-full min-h-[124px] md:min-h-[56px] flex justify-center flex-col md:flex-row space-y-2.5 md:gap-[32px]">
                     <a
-                        href="#6"
+                        href="#Banner"
                         className="hover:cursor-pointer mt-3 md:w-[177px] md:h-[56px] font-manrope font-bold text-base leading-[22px] flex w-full min-h-[56px] rounded-[10px] border-2 border-black/30 py-[17px] px-[24px] md:px-[20px] items-center justify-center bg-white text-black"
                     >
                         Get Early Access
